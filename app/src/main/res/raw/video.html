@@ -1,0 +1,394 @@
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link href="http://vjs.zencdn.net/5.15.1/video-js.css" rel="stylesheet">
+	<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+	<script src="https://player.vimeo.com/api/player.js"></script>
+	<script src="https://cdn.embed.ly/player-0.0.12.min.js"></script>
+</head>
+
+<body style="margin:0" onload="init()">
+	<div id="content" style="width:100%;height:100%"></div>
+	<script>
+		params = {
+			time: {}
+		}
+
+		player = {}
+
+		video = {
+			onPlay: function (event) {
+				video.clearAllTimeout();
+
+				if (params.time.start > 0) {
+					switch (params.source) {
+						case 'youtube':
+							player.seekTo(params.time.start);
+							break;
+						case 'vimeo':
+							player.setCurrentTime(params.time.start);
+							break;
+						case 'office':
+							player.setCurrentTime(params.time.start);
+							break;
+						default:
+							player.currentTime(params.time.start);
+					}
+
+					params.time.start = -1;
+				} else {
+					video.startProgress();
+					video.startInterval();
+				}
+
+				switch (params.source) {
+					case 'youtube':
+						params.time.current = player.getCurrentTime();
+						video.addHistory();
+						break;
+					case 'vimeo':
+						player.getCurrentTime().then(function (value) {
+							params.time.current = value;
+							video.addHistory();
+						});
+						break;
+					case 'office':
+						player.getCurrentTime(function (value) {
+							params.time.current = value;
+							video.addHistory();
+						});
+						break;
+					default:
+						params.time.current = player.currentTime();
+						video.addHistory();
+				}
+			},
+
+			onPause: function (event) {
+				video.clearAllTimeout();
+
+				switch (params.source) {
+					case 'youtube':
+						params.time.current = player.getCurrentTime();
+						video.updateHistory();
+						break;
+					case 'vimeo':
+						player.getCurrentTime().then(function (value) {
+							params.time.current = value;
+							video.updateHistory();
+						});
+						break;
+					case 'office':
+						player.getCurrentTime(function (value) {
+							params.time.current = value;
+							video.updateHistory();
+						});
+						break;
+					default:
+						params.time.current = player.currentTime();
+						video.updateHistory();
+				}
+			},
+
+			onEnded: function (event) {
+				video.clearAllTimeout();
+
+				switch (params.source) {
+					case 'youtube':
+						params.time.current = player.getCurrentTime();
+						video.updateHistory();
+						break;
+					case 'vimeo':
+						player.getCurrentTime(function (value) {
+							params.time.current = value;
+							video.updateHistory();
+						});
+						break;
+					case 'office':
+						player.getCurrentTime(function (value) {
+							params.time.current = value;
+							video.updateHistory();
+						});
+						break;
+					default:
+						params.time.current = player.currentTime();
+						video.updateHistory();
+				}
+			},
+
+			clearAllTimeout: function () {
+				var id = window.setTimeout(function () {}, 0);
+				while (id--) {
+					window.clearTimeout(id);
+				}
+			},
+
+			startProgress: function () {
+				setTimeout(function () {
+					switch (params.source) {
+						case 'youtube':
+							var time = player.getCurrentTime();
+							params.time.current = time;
+							video.showPopupQuiz(time);
+							break;
+						case 'vimeo':
+							player.getCurrentTime().then(function (time) {
+								params.time.current = time;
+								video.showPopupQuiz(time);
+							});
+							break;
+						case 'office':
+							player.getCurrentTime(function (time) {
+								params.time.current = time;
+								video.showPopupQuiz(time);
+							});
+							break;
+						default:
+							var time = player.currentTime();
+							params.time.current = time;
+							video.showPopupQuiz(time);
+					}
+
+					video.startProgress();
+				}, 1000);
+			},
+
+			startInterval: function () {
+				params.time.previous = Date.now();
+
+				setTimeout(function () {
+					video.updateHistory();
+					video.startInterval();
+				}, 10000);
+			},
+
+			showPopupQuiz: function (time) {
+				time = Math.floor(time + 0.5);
+
+				var quiz = null;
+				params.unit.quizzes.forEach(function (item) {
+					if (Math.floor(item.video_time) === time)
+						quiz = item;
+				});
+
+				if (quiz) {
+					video.clearAllTimeout();
+					video.pauseVideo();
+
+					android.showPopupQuiz(JSON.stringify(quiz));
+				}
+			},
+
+			addHistory: function () {
+				params.time.previous = Date.now();
+				var video_time = params.time.current;
+
+				android.addHistory(String(video_time));
+			},
+
+			updateHistory: function () {
+				var video_time = params.time.current;
+				var gained = (Date.now() - params.time.previous) / 1000;
+
+				android.updateHistory(String(video_time), String(gained));
+			},
+
+			playVideo: function () {
+				switch (params.source) {
+					case 'youtube':
+						player.playVideo();
+						break;
+					case 'vimeo':
+						player.play();
+						break;
+					case 'office':
+						player.play();
+						break;
+					default:
+						player.play();
+				}
+			},
+
+			pauseVideo: function () {
+				switch (params.source) {
+					case 'youtube':
+						player.pauseVideo();
+						break;
+					case 'vimeo':
+						player.pause();
+						break;
+					case 'office':
+						player.pause();
+						break;
+					default:
+						player.pause();
+				}
+			},
+
+			seekTo: function (seconds, pause) {
+				video.pauseVideo();
+
+				switch (params.source) {
+					case 'youtube':
+						player.seekTo(seconds);
+						break;
+					case 'vimeo':
+						player.setCurrentTime(seconds);
+						break;
+					case 'office':
+						player.setCurrentTime(seconds);
+						break;
+					default:
+						player.currentTime(seconds);
+				}
+
+				if (!pause)
+					video.playVideo();
+
+				params.time.current = seconds;
+			},
+
+			jumpTo: function () {
+				switch (params.source) {
+					case 'youtube':
+						var seconds = player.getCurrentTime() + seconds;
+						player.seekTo(seconds);
+						params.time.current = seconds;
+						break;
+					case 'vimeo':
+						player.getCurrentTime().then(function (value) {
+							var seconds = value + seconds;
+							player.setCurrentTime(seconds);
+							params.time.current = seconds;
+						});
+						break;
+					case 'office':
+						player.getCurrentTime(function (value) {
+							var seconds = value + seconds;
+							player.setCurrentTime(seconds);
+							params.time.current = seconds;
+						});
+						break;
+					default:
+						var seconds = player.currentTime() + seconds;
+						player.currentTime(seconds);
+						params.time.current = seconds;
+				}
+			}
+		}
+
+		function init() {
+			params.unit = JSON.parse(android.getUnit());
+
+			params.time = {
+				start: Math.floor(params.unit.content ? params.unit.content.min : 0),
+				end: Math.ceil(params.unit.content ? params.unit.content.max : params.unit.content_time),
+				current: 0
+			}
+
+			var video_time = Math.abs(params.unit.video_time);
+			var content_time = Math.abs(params.unit.content_time);
+
+			if (video_time > 0 && (content_time - (video_time - params.time.start)) > 5 && video_time > params.time.start &&
+				video_time < params.time.end)
+				params.time.start = video_time;
+
+			var regYoutube = params.unit.content_url.match(/^.*?youtu(?:\.be|be\.com)\/(?:watch\?[^#]*v=|embed\/)?([a-z0-9_\-]+)/i);
+			var regVimeo = params.unit.content_url.match(/^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/);
+			var regOffice = params.unit.content_url.match(/^.*?mix\.office\.com\/(?:watch|embed)?\/([a-z0-9_\-]+)/i);
+
+			// youtube :: 跳播時 pause & play 一起，拖拉時先 pause，移動後再 play，結束時 ended
+			if (regYoutube) {
+				params.source = 'youtube';
+
+				var videoTag = Date.now();
+				document.querySelector('#content').innerHTML = [
+					'<div id="youtube-', videoTag, '" style="width:100%;height:100%"></div>'
+				].join('');
+
+				player = new YT.Player(['youtube', videoTag].join('-'), {
+					height: '100%',
+					width: '100%',
+					videoId: regYoutube[1],
+					playerVars: {
+						showinfo: 0
+					},
+					events: {
+						onStateChange: function (e) {
+							if (e.data === YT.PlayerState.PLAYING)
+								video.onPlay(e);
+							else if (e.data === YT.PlayerState.PAUSED)
+								video.onPause(e);
+							else if (e.data === YT.PlayerState.ENDED)
+								video.onEnded(e);
+						}
+					}
+				});
+			}
+			// vimeo :: 拖拉和移動後，完全無 event，結束時二次 ended
+			else if (regVimeo) {
+				params.source = 'vimeo';
+
+				var videoTag = Date.now();
+				document.querySelector('#content').innerHTML = [
+					'<iframe id="vimeo-', videoTag, '"',
+					' src="https://player.vimeo.com/video/', regVimeo[5], '?api=1&player_id=vimeo-', videoTag, '"',
+					' style="width:100%;height:100%" frameborder="0"/>'
+				].join('');
+
+				player = new Vimeo.Player(document.querySelector(['#vimeo-', videoTag].join('')));
+				player.on('play', video.onPlay);
+				player.on('pause', video.onPause);
+				player.on('finish', video.onEnded);
+			}
+			// office mix :: 拖拉時無 event，移動後先 pause 再 play，結束時 ended
+			else if (regOffice) {
+				params.source = 'office';
+
+				var videoTag = Date.now();
+				document.querySelector('#content').innerHTML = [
+					'<iframe id="mix-', videoTag, '"',
+					' src="https://mix.office.com/embed/', regOffice[1], '"',
+					' style="width:100%;height:100%" frameborder="0"/>'
+				].join('');
+
+				player = new playerjs.Player(document.querySelector(['#mix-', videoTag].join('')));
+				player.on('ready', function () {
+					player.on("play", video.onPlay);
+					player.on("pause", video.onPause);
+					player.on("ended", video.onEnded);
+				});
+			}
+			// mp4 :: 跳播時 pause & play 一起，拖拉時先 pause，移動後再 play，結束先 pause 再 ended
+			else {
+				params.source = 'video';
+
+				var videoTag = Date.now();
+				document.querySelector('#content').innerHTML = [
+					'<video id="video-', videoTag, '"',
+					' src="', params.unit.content_url, '"',
+					' style="width:100%;height:100%"',
+					' class="video-js vjs-big-play-centered">',
+					'</video>'
+				].join('');
+
+				videojs(['video-', videoTag].join(''), {
+					controls: true,
+					preload: 'auto'
+				}, function () {
+					player = this;
+					player.on("ready", function (e) {
+						player.on("play", video.onPlay);
+						player.on("pause", video.onPause);
+						player.on("ended", video.onEnded);
+					});
+				});
+			}
+		}
+	</script>
+	<script src="https://www.youtube.com/iframe_api"></script>
+</body>
+
+</html>

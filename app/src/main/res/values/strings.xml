@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">1Know Learner</string>
+
+    <string name="action_logout">登出</string>
+
+    <string name="course">課程</string>
+    <string name="task">任務</string>
+
+    <string name="unit_description">單元說明</string>
+
+    <string name="quiz_no">題目</string>
+    <string name="quiz_start">開始練習</string>
+    <string name="quiz_restart">重新開始</string>
+    <string name="quiz_previous">上一題</string>
+    <string name="quiz_next">下一題</string>
+    <string name="quiz_restart_message">確定重新開始練習？</string>
+    <string name="quiz_restart_ok">確定</string>
+    <string name="quiz_restart_cancel">取消</string>
+    <string name="quiz_toast_message">作答結果已送出 《 您答對了 %d 題! 》</string>
+    <string name="exam_start">開始測驗</string>
+
+    <string name="qa_answer">做答內容</string>
+
+    <string name="popup_quiz_submit">確定</string>
+    <string name="popup_quiz_correct">恭禧您答對了!</string>
+    <string name="popup_quiz_wrong">答錯了，再試試看!</string>
+
+    <string name="i_am_done">我做完了</string>
+    <string name="the_answer_has_been_sent">做答結果已送出</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

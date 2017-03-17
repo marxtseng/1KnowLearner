@@ -1,0 +1,23 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
+    <dimen name="dimen8sp">8sp</dimen>
+    <dimen name="dimen16sp">16sp</dimen>
+    <dimen name="dimen24sp">24sp</dimen>
+    <dimen name="dimen32sp">32sp</dimen>
+
+    <dimen name="dimen4dp">4dp</dimen>
+    <dimen name="dimen8dp">8dp</dimen>
+    <dimen name="dimen16dp">16dp</dimen>
+    <dimen name="dimen24dp">24dp</dimen>
+    <dimen name="dimen32dp">32dp</dimen>
+    <dimen name="dimen40dp">40dp</dimen>
+    <dimen name="dimen48dp">48dp</dimen>
+    <dimen name="dimen56dp">56dp</dimen>
+    <dimen name="dimen64dp">64dp</dimen>
+    <dimen name="dimen72dp">72dp</dimen>
+    <dimen name="dimen80dp">80dp</dimen>
+    <dimen name="dimen88dp">88dp</dimen>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_unit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="marxtseng.a1knowlearner.UnitActivity">
+
+    <FrameLayout
+        android:id="@+id/unit_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLight100"/>
+
+</RelativeLayout>

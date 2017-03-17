@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/startLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dimen16dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal|center_vertical"
+        android:visibility="visible">
+
+        <WebView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/quiz_start"
+            android:textColor="@color/colorLight100"
+            android:background="@color/colorPrimary"
+            android:paddingTop="@dimen/dimen8dp"
+            android:paddingRight="@dimen/dimen16dp"
+            android:paddingBottom="@dimen/dimen8dp"
+            android:paddingLeft="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen32dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen16dp"
+            android:paddingRight="@dimen/dimen16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quiz_no"
+                android:textColor="@color/colorDark87"
+                android:paddingRight="@dimen/dimen16dp"
+                android:textAppearance="?android:textAppearanceMedium"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/confirmRestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quiz_restart"
+                android:textColor="@color/colorPrimary"
+                android:background="@color/colorLight100"
+                android:layout_gravity="right"
+                style="?android:attr/borderlessButtonStyle"/>
+        </android.support.v7.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDark12" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dimen16dp"
+                android:orientation="vertical"
+                android:background="@color/colorLight100">
+
+                <WebView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:id="@+id/options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:orientation="vertical"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDark12" />
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen16dp"
+            android:paddingRight="@dimen/dimen16dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <Button
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quiz_previous"
+                android:textColor="@color/colorPrimary"
+                android:background="@color/colorLight100"
+                android:layout_gravity="left"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quiz_next"
+                android:textColor="@color/colorPrimary"
+                android:background="@color/colorLight100"
+                android:layout_gravity="right"
+                style="?android:attr/borderlessButtonStyle"/>
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+</RelativeLayout>
